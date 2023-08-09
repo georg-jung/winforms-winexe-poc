@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+  
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    permissions:
+      contents: read
+    steps:
+    - run: dotnet publish -c Release
+    - uses: actions/upload-artifact@v3
+      with:
+        name: win
+        path: bin/**/*
+
+  build-linux:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+    steps:
+    - run: dotnet publish -c Release
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ubuntu
+        path: bin/**/*
